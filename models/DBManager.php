@@ -1,4 +1,4 @@
-<? 
+<?php
 class DBManager 
 {
     // Création d'une classe singleton qui permet de se connecter à la base de données.
