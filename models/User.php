@@ -39,4 +39,17 @@ class User
         $st->execute(['id'=>$id]);
         return $st->fetch() ?: null;
     }
+
+    public function verifyLogin(string $email, string $password): ?array
+    {
+        $st = $this->pdo->prepare("SELECT * FROM users WHERE email=:e LIMIT 1");
+        $st->execute(['e' => $email]);
+        $user = $st->fetch();
+
+        if (!$user) return null;
+        if (!password_verify($password, $user['password_hash'])) return null;
+
+        return $user;
+    }
+
 }

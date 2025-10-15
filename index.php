@@ -17,6 +17,15 @@ try {
             $auth->showRegister();
             break;
 
+        case 'login':
+            (new AuthController())->login();
+            break;
+
+        case 'logout':
+            (new AuthController())->logout();
+            break;
+
+
         default:
             throw new RuntimeException("Action inconnue: " . htmlspecialchars($action));
     }
