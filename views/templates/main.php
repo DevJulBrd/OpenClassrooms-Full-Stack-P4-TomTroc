@@ -28,11 +28,14 @@
         <a href="index.php?action=books">Nos livres à l'échange</a>
     </div> 
     <div>
-        <a href="index.php?action=message">
+        <a href="index.php?action=inbox" data-desktop-href="index.php?action=inboxDesktop" class="nav-link-messages">
             <i class="fa-regular fa-message"></i>
             Messagerie
+            <?php if(!empty($unreadCount)): ?>
+              <span class="message-count"><?= (int)$unreadCount ?></span>
+            <?php endif; ?>
         </a>
-        <a href="index.php?action=profil">
+        <a href="index.php?action=profile">
             <i class="fa-regular fa-user"></i>
             Mon compte
         </a>
@@ -59,3 +62,32 @@
   </footer>
 </body>
 </html>
+
+<script>
+  (function () {
+    const desktopMq = window.matchMedia('(min-width: 1024px)');
+    const link = document.querySelector('.nav-link-messages');
+    if (!link) return;
+
+    const mobileHref  = link.getAttribute('href');
+    const desktopHref = link.getAttribute('data-desktop-href');
+
+    function applyHref() {
+      if (desktopMq.matches && desktopHref) {
+        link.setAttribute('href', desktopHref);
+      } else {
+        link.setAttribute('href', mobileHref);
+      }
+    }
+
+    // au chargement
+    applyHref();
+
+    // si on redimensionne la fenêtre
+    if (desktopMq.addEventListener) {
+      desktopMq.addEventListener('change', applyHref);
+    } else if (desktopMq.addListener) { // compat anciens navigateurs
+      desktopMq.addListener(applyHref);
+    }
+  })();
+</script>

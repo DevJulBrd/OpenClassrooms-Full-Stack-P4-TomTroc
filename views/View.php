@@ -1,4 +1,9 @@
 <?php
+
+namespace App\Views;
+
+use App\Models\Repositories\MessageRepository;
+
 class View
 {
     private string $title;
@@ -9,64 +14,65 @@ class View
     }
 
     /**
-     * Cette méthode retourne une page complète. 
-     * @param string $viewPath : le chemin de la vue demandée par le controlleur. 
-     * @param array $params : les paramètres que le controlleur a envoyé à la vue.
-     * @return string
+     * Affiche la page complète (layout + vue).
+     *
+     * @param string $viewName Nom de la vue (sans .php)
+     * @param array  $params   Variables passées à la vue
      */
     public function render(string $viewName, array $params = []) : void 
     {
-        // On s'occupe de la vue envoyée
+        // Résout le chemin de la vue
         $viewPath = $this->buildViewPath($viewName);
         
-        // Les deux variables ci-dessous sont utilisées dans le "main.php" qui est le template principal.
+        // $content sera utilisé dans le layout principal
         $content = $this->_renderViewFromTemplate($viewPath, $params);
-        $title = $this->title;
+        $title   = $this->title;
+
+        // 🔹 Nombre de messages non lus dans le header
+        $unreadCount = 0;
+        if (!empty($_SESSION['user_id'])) {
+            $messageRepo = new MessageRepository();
+            $unreadCount = $messageRepo->countUnread((int)$_SESSION['user_id']);
+        }
 
         if (!file_exists(MAIN_VIEW_PATH)) {
-            throw new RuntimeException("Layout introuvable: " . MAIN_VIEW_PATH);
+            throw new \RuntimeException("Layout introuvable: " . MAIN_VIEW_PATH);
         }
 
         ob_start();
-        require(MAIN_VIEW_PATH);
+        require MAIN_VIEW_PATH;   // le layout utilise $title, $content, $unreadCount
         echo ob_get_clean();
     }
 
     /**
-     * Cette méthode génère le contenu de la vue demandée en y injectant les paramètres.
-     * @param string $viewPath : le chemin de la vue demandée par le controlleur. 
-     * @param array $params : les paramètres que le controlleur a envoyé à la vue.
-     * @return string
+     * Construit le chemin complet de la vue.
      */
     private function buildViewPath(string $viewName) : string
     {
-        // sécurité + compat PHP < 8 (pas de str_contains)
+        // petite sécurité
         $viewName = ltrim($viewName, '/');
         if (strpos($viewName, '..') !== false) {
-            throw new RuntimeException('Chemin de vue invalide');
+            throw new \RuntimeException('Chemin de vue invalide');
         }
 
         $path = TEMPLATE_VIEW_PATH . $viewName . '.php';
         if (!file_exists($path)) {
-            throw new RuntimeException("Vue introuvable: " . $path);
+            throw new \RuntimeException("Vue introuvable: " . $path);
         }
         return $path;
     }
 
     /**
-     * Cette méthode génère le contenu de la vue demandée en y injectant les paramètres.
-     * @param string $viewPath : le chemin de la vue demandée par le controlleur. 
-     * @param array $params : les paramètres que le controlleur a envoyé à la vue.
-     * @return string
+     * Rendu d’un template de vue en injectant les paramètres.
      */
     private function _renderViewFromTemplate(string $viewPath, array $params = []) : string
     {
         if (!empty($params)) {
             extract($params, EXTR_OVERWRITE);
         }
+
         ob_start();
         require $viewPath;
         return ob_get_clean();
     }
-
 }

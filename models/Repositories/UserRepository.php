@@ -1,5 +1,11 @@
 <?php
-class User
+
+namespace App\Models\Repositories;
+
+use PDO;
+use App\Models\Entities\User;
+
+class UserRepository
 {
     private \PDO $pdo;
 
@@ -8,18 +14,18 @@ class User
         $this->pdo = DBManager::getInstance()->getPDO();
     }
 
-    public function findByEmail(string $email): ?array
+    public function findByEmail(string $email): ?User
     {
         $st = $this->pdo->prepare("SELECT * FROM users WHERE email=:e LIMIT 1");
         $st->execute(['e'=>$email]);
-        return $st->fetch() ?: null;
+        return $st->fetchObject(User::class) ?: null;
     }
 
-    public function findByUsername(string $username): ?array
+    public function findByUsername(string $username): ?User
     {
         $st = $this->pdo->prepare("SELECT * FROM users WHERE username=:u LIMIT 1");
         $st->execute(['u'=>$username]);
-        return $st->fetch() ?: null;
+        return $st->fetchObject(User::class) ?: null;
     }
 
     public function create(string $email, string $username, string $passwordHash): int
@@ -33,23 +39,28 @@ class User
     }
 
 
-    public function findById(int $id): ?array
+    public function findById(int $id): ?User
     {
         $st = $this->pdo->prepare("SELECT id, email, username, image_url, created_at FROM users WHERE id=:id");
         $st->execute(['id'=>$id]);
-        return $st->fetch() ?: null;
+        return  $st->fetchObject(User::class) ?: null;
     }
 
-    public function verifyLogin(string $email, string $password): ?array
+    public function verifyLogin(string $email, string $password): ?User
     {
         $st = $this->pdo->prepare("SELECT * FROM users WHERE email=:e LIMIT 1");
         $st->execute(['e' => $email]);
-        $user = $st->fetch();
+        $user = $st->fetchObject(User::class);
 
         if (!$user) return null;
-        if (!password_verify($password, $user['password_hash'])) return null;
+        if (!password_verify($password, $user->getPasswordHash())) return null;
 
         return $user;
     }
 
+    public function updateImageUrl(int $id, ?string $imageUrl): void
+    {
+        $st = $this->pdo->prepare("UPDATE users SET image_url=:img WHERE id=:id");
+        $st->execute(['img'=>$imageUrl, 'id'=>$id]);
+    }
 }

@@ -1,4 +1,7 @@
 <?php 
+
+namespace App\Services;
+
 class Utils
 {
     public static function request(string $key, $default = null) {
@@ -14,14 +17,21 @@ class Utils
         exit;
     }
 
-    public static function csrfToken(): string {
-        if (empty($_SESSION['csrf_token'])) {
-            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    public static function requireAuth(): int {
+        if (empty($_SESSION['user_id'])) {
+            self::redirect('index.php?action=login');
         }
-        return $_SESSION['csrf_token'];
+        return (int)$_SESSION['user_id'];
     }
 
-    public static function checkCsrf(string $token): bool {
-        return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+    public static function humanDiff(\DateTimeInterface $from, \DateTimeInterface $to): string {
+        $diff = $from->diff($to);
+        $parts = [];
+        if ($diff->y) $parts[] = $diff->y . ' an' . ($diff->y>1?'s':'');
+        if ($diff->m) $parts[] = $diff->m . ' mois';
+        if ($diff->d && !$diff->y && !$diff->m) $parts[] = $diff->d . ' jour' . ($diff->d>1?'s':'');
+        if (!$parts) $parts[] = 'aujourd’hui';
+        return implode(' ', $parts);
     }
+
 }

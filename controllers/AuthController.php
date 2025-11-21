@@ -1,4 +1,12 @@
 <?php
+
+namespace App\Controllers;
+
+use App\Views\View;
+use App\Services\Utils;
+use App\Models\Repositories\UserRepository;
+use Exception;
+
 class AuthController
 {
     public function showRegister(): void
@@ -7,12 +15,6 @@ class AuthController
         $old = ['email'=>'', 'username'=>''];
 
         if (Utils::isPost()) {
-            // CSRF
-            $token = $_POST['csrf_token'] ?? '';
-            if (!Utils::checkCsrf($token)) {
-                $errors[] = "Session expirée. Merci de réessayer.";
-            }
-
             // Inputs
             $email     = trim((string)($_POST['email'] ?? ''));
             $username  = trim((string)($_POST['username'] ?? ''));
@@ -35,25 +37,27 @@ class AuthController
             }
 
             // Unicité
-            $userModel = new User();
-            if (!$errors && $userModel->findByEmail($email)) {
+            $userRepository = new UserRepository();
+            $userEmail = $userRepository->findByEmail($email);
+            $userUsername = $userRepository->findByUsername($username);
+            if (!$errors && $userEmail) {
                 $errors[] = "Cet email est déjà utilisé.";
             }
-            if (!$errors && $userModel->findByUsername($username)) {
+            if (!$errors && $userUsername) {
                 $errors[] = "Ce pseudo est déjà pris.";
             }
 
             // Création + auto-login
             if (!$errors) {
                 $hash = password_hash($password, PASSWORD_DEFAULT);
-                $userId = $userModel->create($email, $username, $hash);
+                $userId = $userRepository->create($email, $username, $hash);
 
                 $_SESSION['user_id'] = $userId;
 
                 // régénérer un token CSRF (bonne pratique)
                 $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
-                Utils::redirect('index.php?action=welcome');
+                Utils::redirect('index.php?action=profile');
             }
         }
 
@@ -67,10 +71,15 @@ class AuthController
 
     public function welcome(): void
     {
-        if (empty($_SESSION['user_id'])) {
+        $userId = $_SESSION['user_id'];
+
+        if (empty($userId)) {
             Utils::redirect('index.php?action=register');
         }
-        $user = (new User())->findById((int)$_SESSION['user_id']);
+        
+        $userRepository = new UserRepository();
+        $userRepository->findById($userId);
+
         $view = new View('TomTroc');
         $view->render('home', '');
     }
@@ -81,12 +90,6 @@ class AuthController
         $old = ['email' => ''];
 
         if (Utils::isPost()) {
-            // CSRF
-            $token = $_POST['csrf_token'] ?? '';
-            if (!Utils::checkCsrf($token)) {
-                $errors[] = "Session expirée. Merci de réessayer.";
-            }
-
             // Inputs
             $email    = trim((string)($_POST['email'] ?? ''));
             $password = (string)($_POST['password'] ?? '');
@@ -102,19 +105,23 @@ class AuthController
 
             // Vérification en BDD
             if (!$errors) {
-                $userModel = new User();
-                $user = $userModel->verifyLogin($email, $password);
+                $userRepository = new UserRepository();
+                $user = $userRepository->findByEmail($email);
 
                 if (!$user) {
                     $errors[] = "Identifiants incorrects.";
                 } else {
-                    // Connexion: on stocke l'id en session
-                    $_SESSION['user_id'] = (int)$user['id'];
+                    if (!password_verify($password, $user->getPasswordHash())) {
+                        $errors[] = "Identifiants incorrects.";
+                    } else {
+                        // Connexion: on stocke l'id en session
+                        $_SESSION['user_id'] = $user->getId();
 
-                    // (Optionnel) régénérer le token CSRF
-                    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+                        // (Optionnel) régénérer le token CSRF
+                        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
-                    Utils::redirect('index.php?action=home');
+                        Utils::redirect('index.php?action=profile');
+                    }
                 }
             }
         }
@@ -124,7 +131,6 @@ class AuthController
         $view->render('login', [
             'errors' => $errors,
             'old'    => $old,
-            'csrf'   => Utils::csrfToken(),
         ]);
     }
 
