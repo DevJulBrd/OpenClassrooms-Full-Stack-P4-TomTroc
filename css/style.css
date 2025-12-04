@@ -1260,7 +1260,13 @@ main {
   .profile-book-info-container {
     display: flex;
     align-items: center;
-    gap: 150px;
+    justify-content: space-between;
+    width: 350px;
+  }
+
+  .profile-book-title {
+    width: 50%;
+    text-align: center;
   }
 
   .profile-book-img-container {
@@ -1295,6 +1301,7 @@ main {
 
   .desktop {
     display: block;
+    width: 77px;
   }
  
   .profile-books-colors > .profile-book-container:nth-child(even) {
