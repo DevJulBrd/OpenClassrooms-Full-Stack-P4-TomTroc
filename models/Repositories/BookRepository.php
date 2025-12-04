@@ -22,7 +22,7 @@ class BookRepository
     {
         $sql="SELECT b.id, b.user_id, b.title, b.author, b.image_path, b.created_at, u.username
                 FROM books AS b
-                LEFT JOIN users AS u ON b.user_id = u.id
+                INNER JOIN users AS u ON b.user_id = u.id
                 ORDER BY created_at DESC";
         $st = $this->pdo->prepare($sql);
         $st->execute();
@@ -39,7 +39,7 @@ class BookRepository
     {
         $sql = "SELECT b.id, b.user_id, b.title, b.author, b.image_path, b.created_at, u.username
                 FROM books AS b
-                LEFT JOIN users AS u ON b.user_id = u.id
+                INNER JOIN users AS u ON b.user_id = u.id
                 WHERE b.title LIKE :q
                 ORDER BY created_at DESC";
 
@@ -64,7 +64,7 @@ class BookRepository
                 u.username,
                 u.image_url
             FROM books AS b
-            LEFT JOIN users AS u ON b.user_id = u.id
+            INNER JOIN users AS u ON b.user_id = u.id
             WHERE b.id = :id";
         $st = $this->pdo->prepare($sql);
         $st->bindValue(':id', $id, PDO::PARAM_INT);
@@ -82,7 +82,7 @@ class BookRepository
     {
         $sql = "SELECT b.id, b.user_id, b.title, b.author, b.image_path, b.created_at, u.username
                 FROM books AS b
-                LEFT JOIN users AS u ON b.user_id = u.id
+                INNER JOIN users AS u ON b.user_id = u.id
                 ORDER BY created_at DESC
                 LIMIT :o, :l";
         $st = $this->pdo->prepare($sql);
