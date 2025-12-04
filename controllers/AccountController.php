@@ -49,10 +49,6 @@ class AccountController
             Utils::redirect('index.php?action=profile');
         }
 
-        if (!Utils::checkCsrf($_POST['csrf_token'] ?? '')) {
-            throw new Exception('CSRF invalide. Merci de réessayer.');
-        }
-
         $imageUrl = trim((string)($_POST['image_url'] ?? ''));
         if ($imageUrl !== '' && !filter_var($imageUrl, FILTER_VALIDATE_URL)) {
             throw new Exception('URL d’image invalide.');
@@ -70,9 +66,6 @@ class AccountController
         $me = Utils::requireAuth();
         if (!Utils::isPost()) {
             Utils::redirect('index.php?action=profile');
-        }
-        if (!Utils::checkCsrf($_POST['csrf_token'] ?? '')) {
-            throw new Exception('CSRF invalide. Merci de réessayer.');
         }
 
         $bookId = (int)($_POST['book_id'] ?? 0);

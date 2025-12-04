@@ -54,9 +54,6 @@ class AuthController
 
                 $_SESSION['user_id'] = $userId;
 
-                // régénérer un token CSRF (bonne pratique)
-                $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-
                 Utils::redirect('index.php?action=profile');
             }
         }
@@ -65,7 +62,6 @@ class AuthController
         $view->render('register', [
             'errors' => $errors,
             'old'    => $old,
-            'csrf'   => Utils::csrfToken(),
         ]);
     }
 
@@ -117,9 +113,6 @@ class AuthController
                         // Connexion: on stocke l'id en session
                         $_SESSION['user_id'] = $user->getId();
 
-                        // (Optionnel) régénérer le token CSRF
-                        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-
                         Utils::redirect('index.php?action=profile');
                     }
                 }
@@ -139,7 +132,6 @@ class AuthController
         // Déconnexion propre
         session_unset();    // vide la session
         session_destroy();  // détruit la session
-        // (Optionnel) redémarrer une session vide si tu utilises CSRF globalement:
         session_start();
 
         Utils::redirect('index.php?action=home');

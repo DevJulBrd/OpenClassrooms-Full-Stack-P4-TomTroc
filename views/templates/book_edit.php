@@ -18,7 +18,6 @@
         <?php endif; ?>
 
         <form class="book-edit-form" method="post" action="index.php?action=updateBook" enctype="multipart/form-data">
-            <!-- plus de csrf -->
             <input type="hidden" name="id" value="<?= (int)$book->getId() ?>">
 
             <div class="book-edit-part">

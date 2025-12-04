@@ -14,7 +14,6 @@
         <?php endif; ?>
 
         <form class="register-form" method="post" action="index.php?action=login" novalidate>
-        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf) ?>">
 
         <div class="register-input-container">
             <label class="register-label" for="email">Email</label><br>
