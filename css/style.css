@@ -848,11 +848,15 @@ main {
 }
 
 .message-text {
-  width: 75%;
+  max-width: 75%;
   font-family: var(--textFont);
   font-weight: 400;
   font-size: 12px;
   padding: 10px;
+}
+
+.message-sent {
+  background-color: #EDF2F6;
 }
 
 .message-received {
@@ -863,6 +867,12 @@ main {
   display: flex;
   flex-direction: column;
   align-items: end;
+}
+
+.received-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 }
 
 .discussion-message-form {
