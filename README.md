@@ -5,6 +5,7 @@ Application PHP MVC pour échanger des livres entre utilisateurs.
 ## Installation
 
 - Cloner le dépôt
+- Installer composer : `composer install`
 - Importer le fichier SQL P4-Tom-Troc.sql
 - Lancer le serveur PHP intégré : `php -S localhost:8000 -t public`
 
