@@ -18,7 +18,7 @@
   <img src="./images/logo.png" alt="Logo TomTroc" class="logo">
 
   <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-hidden="true">
-  <label for="menu-toggle" class="menu-trigger" aria-label="Ouvrir le menu" aria-controls="primary-nav" role="button">
+  <label for="menu-toggle" class="menu-trigger">
     <i class="fa-solid fa-bars"></i>
   </label>
 
@@ -60,8 +60,6 @@
         <img src="./images/logoFooter.png" alt="Logo TomTroc" class="footer-logo">
     </nav>
   </footer>
-</body>
-</html>
 
 <script>
   (function () {
@@ -91,3 +89,5 @@
     }
   })();
 </script>
+</body>
+</html>

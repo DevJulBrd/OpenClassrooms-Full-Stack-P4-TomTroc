@@ -6,7 +6,9 @@
     <div class="home-text-present-container">       
         <h2 class="home-title-present">Rejoingez nos lecteurs passionés</h2> 
         <p class="home-text-present">Donnez une nouvelle vie à vos livres en les échangeant avec d'autres amoureux de la lecture. Nous croyons en la magie du partage de connaissances et d'histoires à travers les livres. </p>
-        <a href="index.php?action=books" class="home-link-button-present"><button class="home-button-present">Découvrir</button></a> 
+        <div class="link-container">
+            <a href="index.php?action=books" class="home-link-button-present">Découvrir</a>
+        </div> 
     </div>
 
 </section>
@@ -49,9 +51,7 @@
         </div>  
     <?php endif; ?> 
 
-    <button class="home-button-present home-link-books">
-        <a href="index.php?action=books" class="home-link-button-present">Découvrir</a>
-    </button>       
+    <a href="index.php?action=books" class="home-link-button-present home-link-books home-link-padding">Découvrir</a>     
 </section>
 
 
@@ -73,7 +73,9 @@
                 <p class="home-explain-step-text">Proposez un échange et discutez avec d'autres passionnés de lecture.</p>
             </div> 
         </div>
-        <a href="index.php?action=books" class="home-link-button-present"><button class="register-button profile-button home-explain-button">Voir tous les livres</button></a>
+        <div class="link-conntainer">
+            <a href="index.php?action=books" class="register-button profile-button home-explain-button">Voir tous les livres</a>
+        </div>
     </div>
     <img src="./images/img2.png" alt="Dame de dos, au milieu d'une bibliothèque remplie de livre" class="home-img-explain">
 </section>

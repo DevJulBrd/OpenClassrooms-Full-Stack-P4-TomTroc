@@ -196,20 +196,7 @@ main {
     text-align: start;
     padding: 0 5%;
     line-height: 1.5;
-}
-
-.home-button-present {
-    width: 90%;
-    padding: 7%;
-    margin-left: 5%;
-    background-color: var(--principalGreen);
-    border: none;
-    border-radius: 10px;
-    margin-top: 30px;
-    color: white;
-    font-family: var(--textFont);
-    font-weight: 600;
-    font-size: 16px;
+    margin-bottom: 45px;
 }
 
 .home-link-button-present {
@@ -218,6 +205,18 @@ main {
     font-family: var(--textFont);
     font-weight: 600;
     font-size: 16px;
+    width: 90%;
+    padding: 7%;
+    margin-left: 5%;
+    background-color: var(--principalGreen);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: var(--textFont);
+    font-weight: 600;
+    font-size: 16px;
+    display: block;
+    text-align: center;
 }
 
 .home-books-container {
@@ -518,6 +517,9 @@ main {
 }
 
 .profile-button {
+  display: block;
+  text-decoration: none;
+  text-align: center;
   width: 100%;
   margin-top: 0;
   color: var(--principalGreen);
@@ -1128,6 +1130,9 @@ main {
     height: 63px;
     padding: 0;
     margin-top: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }  
 
   .home-img-explain {
@@ -1163,6 +1168,10 @@ main {
     display: flex;
     justify-content: flex-end;
     margin-top: -45px;
+  }
+
+  .home-link-padding {
+    padding: 2%;
   }
 
   /* ----------------------- PAGE REGISTER ----------------- */
@@ -1314,7 +1323,7 @@ main {
 
   .desktop {
     display: block;
-    width: 77px;
+    width: 86px;
   }
  
   .profile-books-colors > .profile-book-container:nth-child(even) {
