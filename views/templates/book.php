@@ -31,8 +31,8 @@
 
         <a href="index.php?action=startConversation&user_id=<?= htmlspecialchars($book->getUser_id()) ?>" 
            data-desktop-href="index.php?action=startConversationDesktop&user_id=<?= htmlspecialchars($book->getUser_id()) ?>" 
-           class="home-link-button-present bookid-button conversation-link">
-           <button class="home-button-present">Envoyer un message</button>
+           class="home-link-button-present bookid-button conversation-link home-button-present">
+          Envoyer un message
         </a> 
     </div>
 </section>

@@ -704,6 +704,7 @@ main {
   width: 157px;
   margin-left: 5%;
   background: white;
+  margin-bottom: 45px;
 }
 
 .bookid-owner-img-container {
@@ -747,10 +748,10 @@ main {
 
 .conversation-link {
   text-decoration: none;
-  color: black;
-  width: 100%;
+  color: white;
+  width: 90%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
