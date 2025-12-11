@@ -954,7 +954,7 @@ main {
 @media screen and (min-width: 1024px) {
 /* ------------------------ HEADER ----------------------- */
     .header {
-        padding: 5%;
+        padding: 2% 5%;
     }
 
     .logo {
@@ -1210,6 +1210,7 @@ main {
 
   .register-img {
     width: 50%;
+    height: 70vh;
     margin: 0;
     justify-self: flex-end;
   }

@@ -8,6 +8,7 @@ use App\Controllers\AccountController;
 use App\Controllers\BooksController;
 use App\Controllers\MessageController;
 use App\Services\Utils;
+use App\Views\View;
 
 $action = Utils::request('action', 'home');
 
