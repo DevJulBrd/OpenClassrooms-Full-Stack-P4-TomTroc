@@ -615,6 +615,8 @@ main {
 }
 
 .profile-book-delete{
+  border: none;
+  background: transparent;
   color: #CB2D2D;
   border-bottom: 1px solid #CB2D2D;
 }

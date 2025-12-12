@@ -107,7 +107,14 @@
                   <a href="index.php?action=editBook&id=<?= (int)$b->getId() ?>" class="profile-book-action">
                     Éditer
                   </a>
-                  <p class="profile-book-action profile-book-delete">Supprimer</p>
+                    <form method="post"
+                          action="index.php?action=deleteBook"
+                          onsubmit="return confirm('Voulez-vous vraiment supprimer ce livre ?');">
+                        <input type="hidden" name="book_id" value="<?= (int)$b->getId() ?>">
+                        <button type="submit" class="profile-book-action profile-book-delete">
+                          Supprimer
+                        </button>
+                    </form>
                 </div>
             </div>           
         <?php endforeach; ?>
