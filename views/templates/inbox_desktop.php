@@ -1,8 +1,8 @@
-<section class="conversation-layout">
+<div class="conversation-layout">
 
   <!-- COLONNE GAUCHE : liste des conversations -->
   <aside class="conversation-sidebar">
-    <h1 class="conversation-title">Messagerie</h1>
+    <h2 class="conversation-title">Messagerie</h2>
 
     <?php if (empty($conversations)): ?>
       <p>Aucune conversation trouvée.</p>
@@ -55,7 +55,7 @@
   </aside>
 
   <!-- COLONNE DROITE : conversation -->
-  <section class="conversation-main">
+  <div class="conversation-main">
     <?php if (empty($conversation_id) || $other_user_id === null): ?>
       <div class="discution-container discution-empty">
         <p>Sélectionnez une conversation pour commencer.</p>
@@ -148,9 +148,9 @@
         })();
       </script>
     <?php endif; ?>
-  </section>
+  </div>
 
-</section>
+</div>
 
 <script>
 (function () {
