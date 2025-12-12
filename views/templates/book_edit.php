@@ -3,7 +3,7 @@
 ?>
 
 <section class="book_edit-container">
-    <a href="index.php?action=profile" class="discution-goBack book_edit-goBack"><- retour</a>
+    <a href="index.php?action=profile" class="discution-goBack book_edit-goBack">&lt;- retour</a>
     <h1 class="register-title book-edit-title">Modifier les informations</h1>
 
     <div class="book_edit-infos-container">
