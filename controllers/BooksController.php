@@ -77,9 +77,9 @@ class BooksController
         ]);
     }
 
-    /**
-     * Traite les modifications
-     */
+/**
+ * Traite les modifications
+ */
     public function updateBook() : void 
     {
         $userId = Utils::requireAuth();
@@ -110,9 +110,9 @@ class BooksController
             throw new \RuntimeException('Accès refusé.');
         }
 
-        $imagePath = $book->getImage_path();
+        $imagePath     = $book->getImage_path();
+        $oldImagePath  = $imagePath;
 
-        // Gestion upload image
         if (!empty($_FILES['image_file']['name'])) {
             $file = $_FILES['image_file'];
 
@@ -145,13 +145,28 @@ class BooksController
                     if (!move_uploaded_file($file['tmp_name'], $dest)) {
                         $errors[] = 'Impossible de sauvegarder le fichier.';
                     } else {
+                        // Nouveau chemin public
                         $imagePath = UPLOADS_BOOKS_URL . $name;
+
+                        // suppression de l’ancienne image si besoin
+                        if ($oldImagePath 
+                            && $oldImagePath !== $imagePath 
+                            && strpos($oldImagePath, UPLOADS_BOOKS_URL) === 0
+                        ) {
+                            // on récupère juste le nom de fichier
+                            $oldFileName = substr($oldImagePath, strlen(UPLOADS_BOOKS_URL));
+                            $oldFilePath = UPLOADS_BOOKS_DIR . $oldFileName;
+
+                            if (is_file($oldFilePath)) {
+                                @unlink($oldFilePath);
+                            }
+                        }
                     }
                 }
             }
         }
 
-        // Si erreurs → réaffiche le formulaire avec un Book "temporaire"
+        // Si erreurs, réaffiche le formulaire avec un Book "temporaire"
         if ($errors) {
             $formBook = (new Book())
                 ->setId($bookId)
@@ -164,7 +179,7 @@ class BooksController
 
             $view = new View('Modifier le livre');
             $view->render('book_edit', [
-                'book'   => $formBook,  // objet Book
+                'book'   => $formBook,  
                 'errors' => $errors,
             ]);
             return;
@@ -187,4 +202,5 @@ class BooksController
 
         Utils::redirect('index.php?action=book&id=' . $bookId);
     }
+
 }
