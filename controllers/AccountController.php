@@ -42,24 +42,70 @@ class AccountController
         ]);
     }
 
-    public function updateAvatar(): void
-    {
-        $me = Utils::requireAuth();
-        if (!Utils::isPost()) {
-            Utils::redirect('index.php?action=profile');
-        }
+public function updateAvatar(): void
+{
+    $me = Utils::requireAuth();
 
-        $imageUrl = trim((string)($_POST['image_url'] ?? ''));
-        if ($imageUrl !== '' && !filter_var($imageUrl, FILTER_VALIDATE_URL)) {
-            throw new Exception('URL d’image invalide.');
-        }
-
-        // 🔹 typo corrigée: $userRepositroy → $userRepository
-        $userRepository = new UserRepository();
-        $userRepository->updateImageUrl($me, $imageUrl !== '' ? $imageUrl : null);
-        
+    if (!Utils::isPost()) {
         Utils::redirect('index.php?action=profile');
     }
+
+    if (!isset($_FILES['avatar']) || $_FILES['avatar']['error'] !== UPLOAD_ERR_OK) {
+        throw new Exception("Erreur lors de l’upload de l’image.");
+    }
+
+    $file = $_FILES['avatar'];
+
+    if ($file['size'] > 2 * 1024 * 1024) {
+        throw new Exception("Fichier trop volumineux (max 2 Mo).");
+    }
+
+    $finfo    = new \finfo(FILEINFO_MIME_TYPE);
+    $mimeType = $finfo->file($file['tmp_name']);
+
+    $allowedTypes = [
+        'image/jpeg' => 'jpg',
+        'image/png'  => 'png',
+        'image/gif'  => 'gif',
+        'image/webp' => 'webp',
+    ];
+
+    if (!isset($allowedTypes[$mimeType])) {
+        throw new Exception("Format d'image non supporté (jpg, png, gif, webp uniquement).");
+    }
+
+    $extension = $allowedTypes[$mimeType];
+
+    $fileName   = 'avatar_' . $me . '_' . time() . '.' . $extension;
+
+    $uploadDir  = __DIR__ . '/../public/uploads/avatars';
+    $publicPath = 'public/uploads/avatars/' . $fileName;
+
+    $targetPath = $uploadDir . '/' . $fileName;
+
+    $userRepository = new UserRepository();
+    $user = $userRepository->findById($me);
+    $oldImage = $user ? $user->getImageUrl() : null;
+
+    if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
+        throw new Exception("Impossible d’enregistrer le fichier envoyé.");
+    }
+
+    $userRepository->updateImageUrl($me, $publicPath);
+
+        if ($oldImage 
+        && str_starts_with($oldImage, 'public/uploads/avatars/')
+    ) {
+        $oldPath = __DIR__ . '/../' . $oldImage;
+
+        if (is_file($oldPath)) {
+            @unlink($oldPath);
+        }
+    }
+
+    Utils::redirect('index.php?action=profile');
+}
+
 
     public function deleteBook(): void
     {

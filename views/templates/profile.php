@@ -10,7 +10,20 @@
         ?>
         <img src="<?= htmlspecialchars($avatarUrl) ?>"
              alt="Photo de profil" class="profile-img">
-        <p class="profile-update">modifier</p>
+          <form action="index.php?action=updateAvatar"
+                method="post"
+                enctype="multipart/form-data"
+                class="profile-avatar-form">
+
+              <label class="profile-update">
+                modifier
+                <input type="file"
+                      name="avatar"
+                      accept="image/*"
+                      class="profile-avatar-input"
+                      onchange="this.form.submit()">
+              </label>
+          </form>
       </div>
 
       <div class="profile-img-container">

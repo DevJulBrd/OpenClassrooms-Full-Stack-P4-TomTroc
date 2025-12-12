@@ -471,7 +471,13 @@ main {
   border-radius: 50%;
   border: 1px solid var(--textGrey);
   width: 135px;
+  height: 135px;
 }
+
+.profile-avatar-input {
+  display: none;
+}
+
 
 .profile-update {
   font-family: var(--textFont);
