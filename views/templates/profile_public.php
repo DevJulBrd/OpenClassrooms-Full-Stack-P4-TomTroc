@@ -1,6 +1,6 @@
 <div class="public-profile-container">
   <div class="profile-header public-profile-header">
-    <section class="profile-block profile-align public-profile-block">
+    <div class="profile-block profile-align public-profile-block">
       <div class="profile-container public-profile-profile-container">
         <div class="profile-img-container">
           <?php
@@ -24,16 +24,14 @@
         <!-- 🔹 On écrit au propriétaire du profil, pas à $book['user_id'] -->
         <a href="index.php?action=startConversation&user_id=<?= $user->getId() ?>"
            data-desktop-href="index.php?action=startConversationDesktop&user_id=<?= $user->getId() ?>" 
-           class="public-profile-link">
-          <button class="register-button profile-button public-profile-button">
+           class="public-profile-link register-button profile-button public-profile-button">
             Écrire un message
-          </button>
         </a>
       </div>
-    </section>
+    </div>
   </div>
 
-  <section class="profile-block-books public-profile-block-books">
+  <div class="profile-block-books public-profile-block-books">
     <?php if (empty($books)): ?>
       <p class="profile-book-container">
         Cet utilisateur n’a pas encore ajouté de livres.
@@ -73,7 +71,7 @@
         <?php endforeach; ?> 
       </div>
     <?php endif; ?>
-  </section>
+  </div>
 </div>
 
 
