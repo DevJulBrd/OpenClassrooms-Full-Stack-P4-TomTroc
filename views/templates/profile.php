@@ -1,7 +1,7 @@
 <h1 class="register-title profile-title">Mon compte</h1>
 
 <div class="profile-header">
-  <section class="profile-block profile-align">
+  <div class="profile-block profile-align">
     <div class="profile-container">
       <div class="profile-img-container">
         <?php
@@ -22,7 +22,7 @@
         </p>
       </div>
     </div>
-  </section>
+  </div>
 
   <section class="profile-block">
     <h2 class="profile-second-title">Vos informations personnelles</h2>
@@ -56,7 +56,7 @@
   </section>
 </div>
 
-<section class="profile-block-books">
+<div class="profile-block-books">
   <?php if (empty($books)): ?>
     <p>Tu n’as pas encore ajouté de livres.</p>
   <?php else: ?>
@@ -113,7 +113,7 @@
         <?php endforeach; ?>
     </div>
   <?php endif; ?>
-</section>
+</div>
 
 
 
