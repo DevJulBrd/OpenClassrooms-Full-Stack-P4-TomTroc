@@ -961,6 +961,40 @@ main {
   display: none;
 }
 
+/* ------------------------ ERROR PAGE ----------------------- */
+.error-page {
+  width: 90%;
+  height: 70vh;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-title {
+  font-family: var(--titleFont);
+  font-size: 36px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.error-text {
+  font-family: var(--textFont);
+  font-size: 16px;
+  font-weight: 400;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.error-link {
+  text-decoration: none;
+  color: white;
+  background-color: var(--principalGreen);
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
 /* ------------------------ DESKTOP ----------------------- */
 @media screen and (min-width: 1024px) {
 /* ------------------------ HEADER ----------------------- */
